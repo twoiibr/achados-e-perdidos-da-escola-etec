@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etec Achados e Perdidos de Títulos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS (Estilos com Paleta Azul Inteligente, Fontes e Efeitos Avançados) --- */
+        :root {
+            /* Paleta de Azuis Inteligente */
+            --darkest-blue: #0A2F4A;     /* Azul petróleo muito escuro para textos e fundos profundos */
+            --deep-blue: #14496B;        /* Azul marinho profundo para cabeçalhos e elementos primários */
+            --ocean-blue: #2A7EA6;       /* Azul oceano vibrante para botões principais e destaques */
+            --sky-blue: #5BA8D7;         /* Azul céu suave para gradientes e bordas */
+            --cloud-blue: #A7D9EE;       /* Azul nuvem muito claro para fundos secundários e hover */
+            --background-light: #F0F8FF; /* Fundo principal da página (quase branco com toque azulado) */
+            --text-dark: #333333;        /* Cor de texto escura padrão */
+            --text-light: #FFFFFF;       /* Cor de texto clara para elementos escuros */
+            --accent-green: #2ecc71;     /* Verde de sucesso */
+            --accent-red: #e74c3c;       /* Vermelho de erro */
+            --accent-orange: #f39c12;    /* Laranja de alerta/registro perdido */
+            --border-light: #DDEBF5;     /* Borda suave para cards e inputs */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif; /* Fonte elegante e moderna para o corpo */
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(180deg, var(--background-light) 0%, var(--cloud-blue) 100%); /* Gradiente de fundo suave */
+            color: var(--text-dark);
+            line-height: 1.8; /* Aumenta a legibilidade */
+            overflow-x: hidden;
+            min-height: 100vh; /* Garante que o gradiente cubra toda a altura */
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--darkest-blue) 0%, var(--deep-blue) 100%); /* Gradiente de azul profundo */
+            color: var(--text-light);
+            padding: 3rem 0;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); /* Sombra mais intensa para profundidade */
+            margin-bottom: 3.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before { /* Efeito de onda mais pronunciado no cabeçalho */
+            content: '';
+            position: absolute;
+            bottom: -70px;
+            left: -15%;
+            width: 130%;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.08); /* Mais translúcido */
+            border-radius: 50%;
+            transform: rotate(-7deg);
+            z-index: 0;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif; /* Fonte serifada para títulos impactantes */
+            margin: 0;
+            font-size: 4.2rem; /* Título principal GIGANTE e elegante */
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 8px rgba(0,0,0,0.5); /* Sombra mais forte */
+            position: relative;
+            z-index: 1;
+        }
+
+        header h2 {
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 1.5rem;
+            font-size: 2.2rem; /* Subtítulo grande */
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.9);
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1100px; /* Largura ainda maior para mais espaço */
+            margin: 0 auto;
+            padding: 2.5rem;
+            display: grid;
+            gap: 4rem; /* Espaçamento generoso entre cards */
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); /* Adaptável e espaçoso */
+            flex-grow: 1; /* Permite que o container se estenda para preencher o espaço */
+        }
+
+        .card {
+            background-color: var(--text-light); /* Fundo branco para os cards */
+            padding: 3.5rem; /* Mais padding */
+            border-radius: 20px; /* Cantos super arredondados */
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.18); /* Sombra elevada e suave */
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Animação suave */
+            border: 1px solid var(--border-light);
+        }
+
+        .card:hover {
+            transform: translateY(-15px) scale(1.02); /* Efeito de elevação e leve aumento */
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        .card h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--deep-blue); /* Azul marinho para títulos de card */
+            margin-top: 0;
+            font-size: 3rem; /* Título do card ainda maior */
+            border-bottom: 5px solid var(--ocean-blue); /* Borda inferior vibrante */
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 2rem; /* Mais espaçamento */
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: var(--darkest-blue); /* Azul escuro para labels */
+            font-size: 1.2rem; /* Labels maiores */
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group input[type="email"],
+        .form-group input[type="file"],
+        .form-group textarea,
+        .form-group select {
+            width: calc(100% - 32px); /* Ajuste de padding */
+            padding: 16px; /* Mais padding */
+            border: 2px solid var(--border-light); /* Borda um pouco mais visível */
+            border-radius: 12px; /* Cantos mais arredondados */
+            font-size: 1.25rem; /* Fonte maior nos inputs */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: #fcfdfe;
+            color: var(--text-dark);
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="date"]:focus,
+        .form-group input[type="email"]:focus,
+        .form-group input[type="file"]:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--ocean-blue); /* Borda fica azul oceano no foco */
+            box-shadow: 0 0 0 6px rgba(42, 126, 166, 0.25); /* Sombra de foco mais sutil e elegante */
+        }
+
+        button, .button {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--ocean-blue) 0%, var(--sky-blue) 100%); /* Gradiente azul vibrante */
+            color: var(--text-light);
+            padding: 18px 40px; /* Mais padding */
+            border: none;
+            border-radius: 12px; /* Cantos arredondados */
+            font-size: 1.4rem; /* Fonte maior */
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1); /* Animação suave */
+            text-decoration: none;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* Sombra para o botão */
+            margin-top: 25px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        button:hover, .button:hover {
+            background: linear-gradient(45deg, var(--sky-blue) 0%, var(--ocean-blue) 100%); /* Inverte o gradiente no hover */
+            transform: translateY(-6px) scale(1.03); /* Efeito de elevação e leve aumento */
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+        }
+
+        button:active, .button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .secretaria-link {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding-top: 3rem;
+        }
+
+        #listaItensCadastrados {
+            list-style: none;
+            padding: 0;
+            margin-top: 30px;
+        }
+
+        #listaItensCadastrados li {
+            background-color: #fefeff; /* Fundo quase branco */
+            border: 1px solid var(--border-light);
+            border-left: 8px solid var(--ocean-blue); /* Destaque azul oceano */
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        #listaItensCadastrados li:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        #listaItensCadastrados li img {
+            width: 150px; /* Imagem maior */
+            height: 150px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 4px solid var(--cloud-blue); /* Borda azul claro */
+            flex-shrink: 0;
+        }
+
+        #listaItensCadastrados li .item-info {
+            flex-grow: 1;
+        }
+
+        #listaItensCadastrados li h4 {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0 0 12px 0;
+            color: var(--deep-blue); /* Azul marinho para títulos de item */
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        #listaItensCadastrados li p {
+            margin: 0 0 10px 0;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+        }
+        #listaItensCadastrados li p strong {
+            color: var(--darkest-blue); /* Destaca labels importantes */
+        }
+
+        .btn-devolver, .btn-excluir {
+            padding: 12px 22px;
+            font-size: 1.1rem;
+            margin-left: 20px;
+            margin-top: 0;
+            font-weight: 600;
+            border-radius: 8px; /* Botões menores, cantos arredondados */
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn-devolver {
+            background: linear-gradient(45deg, var(--accent-green), #27ae60); /* Gradiente verde */
+        }
+        .btn-devolver:hover {
+            background: linear-gradient(45deg, #27ae60, var(--accent-green));
+            transform: translateY(-3px);
+        }
+        .btn-excluir {
+            background: linear-gradient(45deg, var(--accent-red), #c0392b); /* Gradiente vermelho */
+        }
+        .btn-excluir:hover {
+            background: linear-gradient(45deg, #c0392b, var(--accent-red));
+            transform: translateY(-3px);
+        }
+
+        .btn-devolver:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background: #bdc3c7; /* Cinza claro */
+            box-shadow: none;
+            transform: none;
+        }
+
+        .back-button {
+            margin-top: 50px;
+            width: fit-content;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Estilos específicos do perfil do aluno */
+        .profile-card {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding-bottom: 50px;
+        }
+
+        .profile-image-container {
+            width: 220px; /* Foto ainda maior */
+            height: 220px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 35px;
+            border: 8px solid var(--ocean-blue); /* Borda principal da foto de perfil */
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.35); /* Sombra mais destacada */
+            background-color: #f5f5f5;
+        }
+
+        .profile-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .profile-image-container img:hover {
+            transform: scale(1.05); /* Zoom sutil ao passar o mouse */
+        }
+
+        .profile-info p {
+            font-size: 1.35rem; /* Fonte maior */
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .profile-info p strong {
+            color: var(--deep-blue); /* Destaca labels importantes */
+            font-weight: 700;
+        }
+
+        .warning-message {
+            background-color: #fff3cd; /* Amarelo suave */
+            border: 2px solid var(--accent-orange);
+            color: #856404;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .warning-message strong {
+            color: #a0740a;
+        }
+
+        /* Estilos para as abas de categorias */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 25px; /* Mais espaçamento entre abas */
+            border-bottom: 4px solid var(--border-light);
+            padding-bottom: 25px;
+        }
+
+        .tab-button {
+            background: linear-gradient(45deg, var(--sky-blue) 0%, var(--cloud-blue) 100%);
+            color: var(--darkest-blue);
+            padding: 16px 35px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.35rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            text-transform: uppercase;
+        }
+
+        .tab-button:hover {
+            background: linear-gradient(45deg, var(--cloud-blue) 0%, var(--sky-blue) 100%);
+            transform: translateY(-5px);
+            box-shadow: 0 7px 18px rgba(0,0,0,0.25);
+        }
+
+        .tab-button.active {
+            background: linear-gradient(45deg, var(--ocean-blue) 0%, var(--deep-blue) 100%); /* Ativa com azul mais forte */
+            color: var(--text-light);
+            box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.5), 0 5px 15px rgba(0,0,0,0.3); /* Sombra interna e externa */
+            transform: scale(1.08);
+            font-weight: 700;
+        }
+
+        /* Estilos para o botão Registrar Item Perdido que não é uma aba de categoria */
+        .register-lost-button {
+            background: linear-gradient(45deg, var(--accent-orange) 0%, #ff8c00 100%); /* Laranja vibrante para destaque */
+            color: var(--text-light);
+            padding: 18px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-decoration: none;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+            margin-top: 30px; /* Mais espaçamento da div de categorias */
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            display: block; /* Para centralizar o botão */
+        }
+
+        .register-lost-button:hover {
+            background: linear-gradient(45deg, #ff8c00 0%, var(--accent-orange) 100%);
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+        }
+
+
+        .tab-content {
+            margin-top: 40px;
+            grid-column: 1 / -1;
+            padding-top: 20px;
+        }
+
+        /* Estilos para o formulário de item e pré-visualização de foto */
+        .item-form-container img.preview-image {
+            max-width: 350px; /* Imagem de pré-visualização maior */
+            max-height: 350px;
+            margin-top: 25px;
+            border: 4px dashed var(--sky-blue); /* Borda tracejada azul céu */
+            border-radius: 15px;
+            object-fit: contain;
+            background-color: #fdfdfd;
+            padding: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Mensagens de aviso/sucesso */
+        .feedback-message {
+            padding: 25px;
+            margin-top: 35px;
+            border-radius: 15px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.3rem;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.2);
+            line-height: 1.5;
+        }
+
+        .feedback-message.success {
+            background-color: #d4edda;
+            color: var(--accent-green);
+            border: 2px solid #badbcc;
+        }
+
+        .feedback-message.error {
+            background-color: #f8d7da;
+            color: var(--accent-red);
+            border: 2px solid #f5c6cb;
+        }
+
+        /* Classes para esconder/mostrar as seções */
+        .page-section {
+            display: none;
+            grid-column: 1 / -1;
+            animation: fadeIn 0.8s ease-out; /* Animação de fade mais longa e suave */
+        }
+        .page-section.active {
+            display: grid;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Estilo para items na lista de resultados da busca */
+        .item-card {
+            background-color: #fefeff;
+            border: 1px solid var(--border-light);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .item-card:hover {
+            transform: translateX(12px);
+            background-color: #eef5fb; /* Fundo mais claro no hover */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.18);
+        }
+
+        .item-card img {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 3px solid var(--sky-blue);
+        }
+
+        .item-card .item-details {
+            flex-grow: 1;
+        }
+
+        .item-card h4 {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0 0 10px 0;
+            color: var(--deep-blue);
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .item-card p {
+            margin: 0 0 8px 0;
+            font-size: 1.05rem;
+            color: #555;
+        }
+        .item-card p strong {
+            color: var(--darkest-blue);
+        }
+
+        /* Footer elegante */
+        footer {
+            background-color: var(--darkest-blue);
+            color: var(--cloud-blue);
+            text-align: center;
+            padding: 2.5rem 0;
+            margin-top: 5rem;
+            font-size: 1.1rem;
+            box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.3);
+            border-top: 5px solid var(--ocean-blue);
+        }
+        footer p {
+            margin: 0;
+            padding: 0;
+            letter-spacing: 0.5px;
+        }
+        footer a {
+            color: var(--sky-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        footer a:hover {
+            color: var(--text-light);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Etec Achados e Perdidos de Títulos</h1>
+        <h2 id="pageTitle">Bem-vindo(a)!</h2>
+    </header>
+
+    <main class="container">
+        <section id="homePage" class="page-section active">
+            <div class="card">
+                <h3>Cadastro de Aluno da Etec</h3>
+                <p>Para acessar o sistema de **Achados e Perdidos** e personalizar seu perfil, por favor, preencha seus dados abaixo. Este é um ambiente de demonstração; em um sistema real, seus dados seriam protegidos por medidas de segurança robustas.</p>
+                <form id="cadastroAlunoForm">
+                    <div class="form-group">
+                        <label for="nomeCompleto">Nome Completo:</label>
+                        <input type="text" id="nomeCompleto" placeholder="Seu nome completo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataNascimento">Data de Nascimento:</label>
+                        <input type="date" id="dataNascimento" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cidadeMora">Cidade onde mora:</label>
+                        <input type="text" id="cidadeMora" placeholder="Ex: Capão Bonito" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="escolaEtec">Escola Etec onde está matriculado:</label>
+                        <input type="text" id="escolaEtec" value="Etec Darcy Pereira de Moraes" readonly required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nomePais">Nome Completo do Pai ou da Mãe:</label>
+                        <input type="text" id="nomePais" placeholder="Nome completo de um dos seus pais" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emailAluno">Seu Email Institucional:</label>
+                        <input type="email" id="emailAluno" placeholder="seu.email@etec.sp.gov.br" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rgAluno">Número do seu RG:</label>
+                        <input type="text" id="rgAluno" placeholder="Ex: XX.XXX.XXX-X" required>
+                    </div>
+                    <button type="submit">Cadastrar e Entrar no Perfil</button>
+                </form>
+            </div>
+
+            <div class="card secretaria-link">
+                <h3>Acesso Restrito da Secretária</h3>
+                <p>Para acesso exclusivo da equipe administrativa.</p>
+                <button onclick="showPage('secretariaPage')">Acessar Painel da Secretária</button>
+            </div>
+        </section>
+
+        <section id="secretariaPage" class="page-section">
+            <div class="card">
+                <h3>Registrar Novo Item Achado</h3>
+                <form id="cadastroItemForm">
+                    <div class="form-group">
+                        <label for="tipoItem">Tipo de Item:</label>
+                        <select id="tipoItem" required>
+                            <option value="achado">Item Achado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoriaItem">Categoria do Item:</label>
+                        <select id="categoriaItem" required>
+                            <option value="">Selecione a Categoria</option>
+                            <option value="estojo">Estojo</option>
+                            <option value="caderno">Caderno</option>
+                            <option value="roupa">Roupa</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nomeItem">Nome do Item (Breve):</label>
+                        <input type="text" id="nomeItem" placeholder="Ex: Estojo azul com zíper, Caderno de matemática" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="descricaoItem">Descrição Detalhada (Cor, marca, modelo, características únicas, conteúdo):</label>
+                        <textarea id="descricaoItem" rows="4" placeholder="Ex: Estojo azul escuro da Faber-Castell, com um arranhão na lateral direita e 3 canetas dentro." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="localAchado">Local Exato onde foi Achado:</label>
+                        <input type="text" id="localAchado" placeholder="Ex: Corredor do Bloco A, próximo à Sala 5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataAchado">Data em que o Item foi Achado:</label>
+                        <input type="date" id="dataAchado" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contatoQuemAchou">Contato de Quem Achou (Opcional):</label>
+                        <input type="text" id="contatoQuemAchou" placeholder="Nome ou RA de quem encontrou">
+                    </div>
+                    <div class="form-group">
+                        <label for="statusItem">Status Atual:</label>
+                        <select id="statusItem" required>
+                            <option value="disponivel">Disponível</option>
+                            <option value="devolvido">Devolvido</option>
+                            <option value="aguardando_retirada">Aguardando Retirada</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="imagemItem">URL da Imagem do Item (Para visualização):</label>
+                        <input type="text" id="imagemItem" placeholder="Cole a URL de uma imagem de exemplo (ex: images/mochila.jpg)">
+                        <small>**Importante:** Em um sistema real, seria um campo de upload de arquivo para um servidor.</small>
+                        <img id="previewImagemItem" src="" alt="Pré-visualização da Imagem" class="preview-image" style="display: none;">
+                    </div>
+                    <button type="submit">Registrar Item Achado</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Itens Cadastrados no Achados e Perdidos</h3>
+                <ul id="listaItensCadastrados">
+                    <li>Nenhum item cadastrado ainda.</li>
+                </ul>
+            </div>
+            <button onclick="showPage('homePage');" class="button back-button">Voltar ao Início</button>
+        </section>
+
+        <section id="alunoPerfilPage" class="page-section">
+            <div class="card profile-card">
+                <h3>Seu Perfil Personalizado, <span id="nomeAlunoPerfil"></span>!</h3>
+                <div class="profile-image-container">
+                    <img id="profileImage" src="images/default_profile.png" alt="Foto de Perfil">
+                </div>
+                <div class="form-group">
+                    <label for="uploadProfileImage" class="button">Mudar Foto de Perfil</label>
+                    <input type="file" id="uploadProfileImage" accept="image/*" style="display: none;">
+                    <small>**Atenção:** A foto é salva localmente no seu navegador para demonstração.</small>
+                </div>
+                <div class="profile-info">
+                    <p><strong>Nome Completo:</strong> <span id="infoNomeCompleto"></span></p>
+                    <p><strong>Data de Nascimento:</strong> <span id="infoDataNascimento"></span></p>
+                    <p><strong>Cidade:</strong> <span id="infoCidadeMora"></span></p>
+                    <p><strong>Etec Matriculado:</strong> <span id="infoEscolaEtec"></span></p>
+                    <p><strong>Nome dos Pais:</strong> <span id="infoNomePais"></span></p>
+                    <p><strong>Email:</strong> <span id="infoEmailAluno"></span></p>
+                    <p><strong>RG:</strong> <span id="infoRgAluno"></span></p>
+                </div>
+
+                <div class="form-group" style="margin-top: 20px;">
+                    <label for="novoNomePerfil">Alterar Seu Nome de Exibição (Apelido):</label>
+                    <input type="text" id="novoNomePerfil" placeholder="Seu apelido ou nome preferido">
+                    <p class="warning-message">
+                        **Aviso Importante:** Não recomendamos alterar seu nome completo aqui, pois isso pode dificultar a secretaria em identificar você corretamente em nosso registro oficial. Use apenas para um apelido, se desejar.
+                    </p>
+                    <button id="salvarNomePerfil">Salvar Novo Nome</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Acessar o Portal Achados e Perdidos</h3>
+                <p>Clique abaixo para navegar pelas categorias de itens encontrados ou para registrar um item que você perdeu.</p>
+                <button onclick="showPage('alunoAbasPage');">Ir para Achados e Perdidos</button>
+            </div>
+            <button onclick="showPage('homePage'); localStorage.removeItem('alunoLogado');" class="button back-button">Sair da Conta / Voltar ao Início</button>
+        </section>
+
+        <section id="alunoAbasPage" class="page-section">
+            <div class="card">
+                <h3>Explorar Categorias de Itens Achados</h3>
+                <p>Selecione a categoria do item que você está procurando:</p>
+                <div class="tabs">
+                    <button class="tab-button" data-categoria="estojo" onclick="showCategoryPage('estojo')">Estojos</button>
+                    <button class="tab-button" data-categoria="caderno" onclick="showCategoryPage('caderno')">Cadernos</button>
+                    <button class="tab-button" data-categoria="roupa" onclick="showCategoryPage('roupa')">Roupas</button>
+                    <button class="tab-button" data-categoria="outros" onclick="showCategoryPage('outros')">Outros</button>
+                </div>
+                <button class="register-lost-button" onclick="showRegisterLostPage()">Registrar Item Perdido</button>
+            </div>
+
+            <div class="card tab-content">
+                <h3>Itens Achados Disponíveis na Categoria: <span id="currentCategoryTitle">Selecione Acima</span></h3>
+                <p>Estes são os itens que a secretaria encontrou. Se você reconhecer seu item, clique nele para ir ao formulário e enviar uma prova!</p>
+                <div id="listaItensAchados">
+                    <p>Nenhum item achado disponível nesta categoria ainda. Selecione uma das abas acima.</p>
+                </div>
+            </div>
+
+            <button onclick="showPage('alunoPerfilPage');" class="button back-button">Voltar ao Meu Perfil</button>
+        </section>
+
+        <section id="registerLostPage" class="page-section item-form-container">
+            <div class="card">
+                <h3>Registrar Meu Item Perdido</h3>
+                <p>Preencha os detalhes do item que você perdeu. Quanto mais informações, mais fácil será para a secretaria encontrá-lo!</p>
+                <form id="itemPerdidoForm">
+                    <div class="form-group">
+                        <label for="categoriaPerdido">Categoria do Item Perdido:</label>
+                        <select id="categoriaPerdido" required>
+                            <option value="">Selecione a Categoria</option>
+                            <option value="estojo">Estojo</option>
+                            <option value="caderno">Caderno</option>
+                            <option value="roupa">Roupa</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nomePerdido">Nome do Item (Breve):</label>
+                        <input type="text" id="nomePerdido" placeholder="Ex: Meu celular Samsung, Óculos de grau" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="descricaoPerdido">Descreva seu item detalhadamente (Cor, marca, características únicas, algo que o identifique):</label>
+                        <textarea id="descricaoPerdido" rows="4" placeholder="Ex: Celular Samsung Galaxy A52, preto, com rachadura na tela. Óculos de armação redonda dourada, lente antirreflexo." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="localPerdido">Onde você acha que perdeu o item?</label>
+                        <input type="text" id="localPerdido" placeholder="Ex: Pátio do Bloco B, Sala de aula 8, Biblioteca" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataPerdido">Quando você percebeu que perdeu o item?</label>
+                        <input type="date" id="dataPerdido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fotoPerdidoProva">Anexe uma foto do seu item ou algo que comprove que ele é seu:</label>
+                        <input type="file" id="fotoPerdidoProva" accept="image/*">
+                        <small>**Importante:** Esta imagem é salva no navegador para demonstração. Para um sistema real, o upload seria para um servidor.</small>
+                        <img id="previewFotoPerdidoProva" src="" alt="Pré-visualização da Prova" class="preview-image" style="display: none;">
+                    </div>
+                    <button type="submit">Enviar Pedido para a Secretaria</button>
+                </form>
+                <div id="feedbackMessagePerdido" class="feedback-message" style="display: none;"></div>
+            </div>
+
+            <button onclick="showPage('alunoAbasPage');" class="button back-button">Voltar às Categorias</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>Desenvolvido com carinho para a <a href="https://www.etecdarcy.com.br/" target="_blank">Etec Darcy Pereira de Moraes</a> &copy; 2025.</p>
+        <p>Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        // --- JavaScript (Lógica e Local Storage) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Referências para as seções de página
+            const homePage = document.getElementById('homePage');
+            const secretariaPage = document.getElementById('secretariaPage');
+            const alunoPerfilPage = document.getElementById('alunoPerfilPage');
+            const alunoAbasPage = document.getElementById('alunoAbasPage');
+            const registerLostPage = document.getElementById('registerLostPage');
+            const pageTitle = document.getElementById('pageTitle');
+            const nomeAlunoPerfilSpan = document.getElementById('nomeAlunoPerfil');
+
+            let currentCategory = '';
+
+            // --- Função para alternar a exibição das páginas ---
+            window.showPage = (pageId) => {
+                document.querySelectorAll('.page-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(pageId).classList.add('active');
+
+                // Atualiza o título da página principal
+                switch (pageId) {
+                    case 'homePage':
+                        pageTitle.textContent = 'Bem-vindo(a)!';
+                        break;
+                    case 'secretariaPage':
+                        pageTitle.textContent = 'Painel da Secretária';
+                        renderizarItensSecretaria();
+                        break;
+                    case 'alunoPerfilPage':
+                        const alunoInfo = getAlunoInfo();
+                        if (alunoInfo) {
+                            pageTitle.textContent = `Olá, ${alunoInfo.nomeExibicao}!`; // Título mais amigável
+                            preencherPerfilAluno();
+                        } else {
+                            showPage('homePage');
+                            alert('Por favor, faça seu cadastro na página inicial primeiro.');
+                        }
+                        break;
+                    case 'alunoAbasPage':
+                        pageTitle.textContent = 'Pesquise ou Registre seu Item Perdido';
+                        document.getElementById('listaItensAchados').innerHTML = '<p>Selecione uma categoria para ver os itens achados.</p>';
+                        document.getElementById('currentCategoryTitle').textContent = 'Selecione Acima';
+                        document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+                        break;
+                    case 'registerLostPage':
+                        pageTitle.textContent = 'Registrar Meu Item Perdido';
+                        // Resetar formulário e feedback
+                        document.getElementById('itemPerdidoForm').reset();
+                        document.getElementById('previewFotoPerdidoProva').style.display = 'none';
+                        document.getElementById('previewFotoPerdidoProva').src = '';
+                        document.getElementById('feedbackMessagePerdido').style.display = 'none';
+                        break;
+                }
+            };
+
+            // --- Funções para gerenciar Local Storage ---
+            function getItens() {
+                const itens = localStorage.getItem('itensAchadosPerdidos');
+                return itens ? JSON.parse(itens) : [];
+            }
+
+            function saveItens(itens) {
+                localStorage.setItem('itensAchadosPerdidos', JSON.stringify(itens));
+            }
+
+            function getAlunoInfo() {
+                const aluno = localStorage.getItem('alunoLogado');
+                return aluno ? JSON.parse(aluno) : null;
+            }
+
+            function saveAlunoInfo(aluno) {
+                localStorage.setItem('alunoLogado', JSON.stringify(aluno));
+            }
+
+            // --- Lógica para Cadastro do Aluno (homePage) ---
+            const cadastroAlunoForm = document.getElementById('cadastroAlunoForm');
+            if (cadastroAlunoForm) {
+                cadastroAlunoForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    const alunoInfo = {
+                        nomeCompleto: document.getElementById('nomeCompleto').value,
+                        dataNascimento: document.getElementById('dataNascimento').value,
+                        cidadeMora: document.getElementById('cidadeMora').value,
+                        escolaEtec: document.getElementById('escolaEtec').value,
+                        nomePais: document.getElementById('nomePais').value,
+                        emailAluno: document.getElementById('emailAluno').value,
+                        rgAluno: document.getElementById('rgAluno').value,
+                        fotoPerfil: 'images/default_profile.png',
+                        nomeExibicao: document.getElementById('nomeCompleto').value
+                    };
+
+                    saveAlunoInfo(alunoInfo);
+                    alert(`Boas-vindas, ${alunoInfo.nomeCompleto}! Seu cadastro foi salvo. Vamos para seu perfil!`);
+                    showPage('alunoPerfilPage');
+                });
+            }
+
+            // --- Lógica para Painel da Secretária (secretariaPage) ---
+            const cadastroItemForm = document.getElementById('cadastroItemForm');
+            const listaItensCadastrados = document.getElementById('listaItensCadastrados');
+            const imagemItemInput = document.getElementById('imagemItem');
+            const previewImagemItem = document.getElementById('previewImagemItem');
+
+            if (imagemItemInput) {
+                imagemItemInput.addEventListener('input', () => {
+                    const url = imagemItemInput.value;
+                    if (url) {
+                        previewImagemItem.src = url;
+                        previewImagemItem.style.display = 'block';
+                    } else {
+                        previewImagemItem.style.display = 'none';
+                        previewImagemItem.src = '';
+                    }
+                });
+            }
+
+            function renderizarItensSecretaria() {
+                const itens = getItens();
+                listaItensCadastrados.innerHTML = '';
+
+                if (itens.length === 0) {
+                    listaItensCadastrados.innerHTML = '<li>Nenhum item cadastrado ainda.</li>';
+                    return;
+                }
+
+                itens.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    const statusText = item.status === 'devolvido' ? 'Devolvido' : (item.status === 'pendente_analise' ? 'Pendente Análise (Aluno)' : 'Disponível');
+                    const statusColor = item.status === 'devolvido' ? 'var(--accent-green)' : (item.status === 'pendente_analise' ? 'var(--accent-orange)' : 'var(--ocean-blue)');
+
+                    li.innerHTML = `
+                        <img src="${item.imagem || item.fotoProva || 'https://via.placeholder.com/150?text=Sem+Imagem'}" alt="${item.nomeItem}">
+                        <div class="item-info">
+                            <h4>${item.nomeItem} (<strong style="color: ${item.tipo === 'achado' ? 'var(--ocean-blue)' : 'var(--accent-orange)'}">${item.tipo === 'achado' ? 'Achado' : 'Perdido'}</strong>) - Categoria: <strong>${item.categoria}</strong></h4>
+                            <p><strong>Descrição:</strong> ${item.descricao}</p>
+                            <p><strong>Local:</strong> ${item.local}</p>
+                            <p><strong>Data:</strong> ${item.data}</p>
+                            <p><strong>Status:</strong> <span style="color: ${statusColor}; font-weight: bold;">${statusText}</span></p>
+                            ${item.contato ? `<p><strong>Contato Achado:</strong> ${item.contato}</p>` : ''}
+                            ${item.alunoNome && item.alunoEmail ? `<p><strong>Registrado por:</strong> ${item.alunoNome} (${item.alunoEmail})</p>` : ''}
+                            ${item.fotoProva && item.tipo === 'perdido' ? `<p><strong>Prova do Aluno:</strong> <a href="${item.fotoProva}" target="_blank" style="color: var(--ocean-blue); text-decoration: none; font-weight: 600;">Ver Foto</a></p>` : ''}
+                        </div>
+                        <button data-index="${index}" class="btn-devolver" ${item.status === 'devolvido' ? 'disabled' : ''}>${item.status === 'devolvido' ? 'Devolvido' : 'Marcar como Devolvido'}</button>
+                        <button data-index="${index}" class="btn-excluir">Excluir</button>
+                    `;
+                    listaItensCadastrados.appendChild(li);
+                });
+
+                document.querySelectorAll('.btn-devolver').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const index = e.target.dataset.index;
+                        const itens = getItens();
+                        itens[index].status = 'devolvido';
+                        saveItens(itens);
+                        renderizarItensSecretaria();
+                        alert('Item marcado como devolvido!');
+                    });
+                });
+
+                document.querySelectorAll('.btn-excluir').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const index = e.target.dataset.index;
+                        if (confirm('Tem certeza que deseja excluir este item permanentemente?')) {
+                            const itens = getItens();
+                            itens.splice(index, 1);
+                            saveItens(itens);
+                            renderizarItensSecretaria();
+                            alert('Item excluído com sucesso!');
+                        }
+                    });
+                });
+            }
+
+            if (cadastroItemForm) {
+                cadastroItemForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    const novoItem = {
+                        id: Date.now(),
+                        tipo: document.getElementById('tipoItem').value,
+                        categoria: document.getElementById('categoriaItem').value,
+                        nomeItem: document.getElementById('nomeItem').value,
+                        descricao: document.getElementById('descricaoItem').value,
+                        local: document.getElementById('localAchado').value,
+                        data: document.getElementById('dataAchado').value,
+                        contato: document.getElementById('contatoQuemAchou').value,
+                        status: document.getElementById('statusItem').value,
+                        imagem: document.getElementById('imagemItem').value || '',
+                        dataCadastro: new Date().toISOString().split('T')[0],
+                        alunoNome: '',
+                        alunoEmail: '',
+                        fotoProva: ''
+                    };
+
+                    const itens = getItens();
+                    itens.push(novoItem);
+                    saveItens(itens);
+
+                    alert('Item registrado com sucesso no Achados e Perdidos da Secretaria!');
+                    cadastroItemForm.reset();
+                    previewImagemItem.style.display = 'none';
+                    previewImagemItem.src = '';
+                    renderizarItensSecretaria();
+                });
+            }
+
+            // --- Lógica para Perfil do Aluno (alunoPerfilPage) ---
+            function preencherPerfilAluno() {
+                const alunoInfo = getAlunoInfo();
+                if (!alunoInfo) {
+                    return;
+                }
+
+                nomeAlunoPerfilSpan.textContent = alunoInfo.nomeExibicao;
+
+                document.getElementById('infoNomeCompleto').textContent = alunoInfo.nomeCompleto;
+                document.getElementById('infoDataNascimento').textContent = alunoInfo.dataNascimento;
+                document.getElementById('infoCidadeMora').textContent = alunoInfo.cidadeMora;
+                document.getElementById('infoEscolaEtec').textContent = alunoInfo.escolaEtec;
+                document.getElementById('infoNomePais').textContent = alunoInfo.nomePais;
+                document.getElementById('infoEmailAluno').textContent = alunoInfo.emailAluno;
+                document.getElementById('infoRgAluno').textContent = alunoInfo.rgAluno;
+
+                const profileImage = document.getElementById('profileImage');
+                const uploadProfileImage = document.getElementById('uploadProfileImage');
+                const novoNomePerfilInput = document.getElementById('novoNomePerfil');
+                const salvarNomePerfilBtn = document.getElementById('salvarNomePerfil');
+
+                profileImage.src = alunoInfo.fotoPerfil || 'images/default_profile.png';
+                novoNomePerfilInput.value = alunoInfo.nomeExibicao;
+
+                if (uploadProfileImage) {
+                    uploadProfileImage.onchange = (e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = (event) => {
+                                profileImage.src = event.target.result;
+                                alunoInfo.fotoPerfil = event.target.result;
+                                saveAlunoInfo(alunoInfo);
+                                alert('Sua foto de perfil foi atualizada com sucesso (visível apenas no seu navegador)!');
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    };
+                }
+
+                if (salvarNomePerfilBtn) {
+                    salvarNomePerfilBtn.onclick = () => {
+                        const novoNome = novoNomePerfilInput.value.trim();
+                        if (novoNome && novoNome !== alunoInfo.nomeExibicao) {
+                            alunoInfo.nomeExibicao = novoNome;
+                            saveAlunoInfo(alunoInfo);
+                            nomeAlunoPerfilSpan.textContent = novoNome;
+                            pageTitle.textContent = `Olá, ${novoNome}!`;
+                            alert('Seu nome de exibição foi atualizado!');
+                        } else if (!novoNome) {
+                            alert('Por favor, digite um nome para exibição.');
+                        }
+                    };
+                }
+            }
+
+            // --- Lógica para Abas de Pesquisa do Aluno (alunoAbasPage) ---
+            const listaItensAchadosDiv = document.getElementById('listaItensAchados');
+            const currentCategoryTitle = document.getElementById('currentCategoryTitle');
+
+            window.showCategoryPage = (category) => {
+                currentCategory = category;
+
+                document.querySelectorAll('.tab-button').forEach(button => {
+                    if (button.dataset.categoria === category) {
+                        button.classList.add('active');
+                    } else {
+                        button.classList.remove('active');
+                    }
+                });
+
+                renderizarItensAchadosAluno(category);
+                currentCategoryTitle.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+            };
+
+            function renderizarItensAchadosAluno(category) {
+                const itens = getItens();
+                listaItensAchadosDiv.innerHTML = '';
+
+                const itensFiltrados = itens.filter(item =>
+                    item.tipo === 'achado' &&
+                    item.status === 'disponivel' &&
+                    item.categoria === category
+                );
+
+                if (itensFiltrados.length === 0) {
+                    listaItensAchadosDiv.innerHTML = `<p>Nenhum item achado disponível na categoria "<strong>${category.charAt(0).toUpperCase() + category.slice(1)}</strong>" no momento. Verifique novamente mais tarde!</p>`;
+                    return;
+                }
+
+                itensFiltrados.forEach(item => {
+                    const div = document.createElement('div');
+                    div.classList.add('item-card');
+                    div.innerHTML = `
+                        <img src="${item.imagem || 'https://via.placeholder.com/140?text=Sem+Imagem'}" alt="${item.nomeItem}">
+                        <div class="item-details">
+                            <h4>${item.nomeItem}</h4>
+                            <p><strong>Descrição:</strong> ${item.descricao}</p>
+                            <p><strong>Local Encontrado:</strong> ${item.local}</p>
+                            <p><strong>Data:</strong> ${item.data}</p>
+                            <p style="color: var(--accent-green); font-weight: bold;">Status: Disponível para Retirada</p>
+                        </div>
+                    `;
+                    div.onclick = () => {
+                        alert(`Você reconheceu "${item.nomeItem}"! Para reaver, registre seu item perdido na seção 'Registrar Item Perdido' e inclua uma prova detalhada.`);
+                    };
+                    listaItensAchadosDiv.appendChild(div);
+                });
+            }
+
+            // --- Lógica para a Nova Página de Registro de Item Perdido (registerLostPage) ---
+            const itemPerdidoForm = document.getElementById('itemPerdidoForm');
+            const fotoPerdidoProvaInput = document.getElementById('fotoPerdidoProva');
+            const previewFotoPerdidoProva = document.getElementById('previewFotoPerdidoProva');
+            const feedbackMessagePerdido = document.getElementById('feedbackMessagePerdido');
+
+            window.showRegisterLostPage = () => {
+                if (!getAlunoInfo()) {
+                    showPage('homePage');
+                    alert('Ops! Para registrar um item perdido, você precisa primeiro fazer seu cadastro.');
+                    return;
+                }
+                showPage('registerLostPage');
+            };
+
+            if (fotoPerdidoProvaInput) {
+                fotoPerdidoProvaInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            previewFotoPerdidoProva.src = event.target.result;
+                            previewFotoPerdidoProva.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        previewFotoPerdidoProva.style.display = 'none';
+                        previewFotoPerdidoProva.src = '';
+                    }
+                });
+            }
+
+            if (itemPerdidoForm) {
+                itemPerdidoForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    const alunoInfo = getAlunoInfo();
+                    if (!alunoInfo) {
+                         alert('Erro: Informações do aluno não encontradas. Por favor, cadastre-se novamente.');
+                         showPage('homePage');
+                         return;
+                    }
+
+                    const fotoProvaFile = document.getElementById('fotoPerdidoProva').files[0];
+                    let fotoProvaDataURL = '';
+
+                    if (fotoProvaFile) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            fotoProvaDataURL = event.target.result;
+                            salvarItemPerdido(alunoInfo, fotoProvaDataURL);
+                        };
+                        reader.readAsDataURL(fotoProvaFile);
+                    } else {
+                        salvarItemPerdido(alunoInfo, fotoProvaDataURL);
+                    }
+                });
+            }
+
+            function salvarItemPerdido(alunoInfo, fotoProvaDataURL) {
+                const novoItemPerdido = {
+                    id: Date.now(),
+                    tipo: 'perdido',
+                    categoria: document.getElementById('categoriaPerdido').value,
+                    nomeItem: document.getElementById('nomePerdido').value,
+                    descricao: document.getElementById('descricaoPerdido').value,
+                    local: document.getElementById('localPerdido').value,
+                    data: document.getElementById('dataPerdido').value,
+                    alunoNome: alunoInfo.nomeCompleto,
+                    alunoEmail: alunoInfo.emailAluno,
+                    fotoProva: fotoProvaDataURL,
+                    status: 'pendente_analise',
+                    dataRegistro: new Date().toISOString().split('T')[0]
+                };
+
+                const itens = getItens();
+                itens.push(novoItemPerdido);
+                saveItens(itens);
+
+                feedbackMessagePerdido.classList.remove('error');
+                feedbackMessagePerdido.classList.add('success');
+                feedbackMessagePerdido.innerHTML = `
+                    **Sucesso!** Seu pedido foi enviado para a secretaria.
+                    <br>Tempo estimado de resposta: **1 a 3 dias úteis**.
+                    <br>Fique de olho no seu email!
+                `;
+                feedbackMessagePerdido.style.display = 'block';
+
+                itemPerdidoForm.reset();
+                previewFotoPerdidoProva.style.display = 'none';
+                previewFotoPerdidoProva.src = '';
+
+                setTimeout(() => {
+                    showPage('alunoAbasPage');
+                }, 5000); // Redireciona após 5 segundos
+            }
+
+            // --- Lógica de inicialização ---
+            const alunoLogado = getAlunoInfo();
+            if (alunoLogado) {
+                showPage('alunoPerfilPage');
+            } else {
+                showPage('homePage');
+            }
+        });
+    </script>
+</body>
+</html>
